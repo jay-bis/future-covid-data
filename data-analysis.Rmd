@@ -1,0 +1,15 @@
+---
+title: "data-anaysis"
+author: "Bouzaher, Julia"
+date: "March 27, 2020"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(readr)
+
+test_dat <- read_csv("test_dat.csv")
+
+
+```

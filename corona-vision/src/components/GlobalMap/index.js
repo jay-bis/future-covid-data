@@ -1,6 +1,5 @@
 import React from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
-import * as L from 'leaflet';
+import { Map, TileLayer } from 'react-leaflet';
 import 'leaflet.markercluster';
 
 import MarkerCluster from '../MarkerCluster';

@@ -12,6 +12,7 @@ Hello all!
 2) cd into the `api` folder
 3) run `python3 -m venv env` to create a virtual environment
 4) run `source env/bin/activate` to activate the virtual environment
-5) run `flask run` to get the server started
+5) run `pip install flask python-dotenv` to make sure you have the right libraries installed
+6) run `flask run` to get the server started
 
-If this isn't working consider running `export FLASK_APP=api.py` between step 4) and 5).
+If this isn't working consider running `export FLASK_APP=api.py` between step 5) and 6).

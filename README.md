@@ -14,6 +14,4 @@ Hello all!
 4) run `source env/bin/activate` to activate the virtual environment
 5) run `flask run` to get the server started
 
-If this isn't working consider doing
-run `export FLASK_APP=api.py` to set the flask virtual environment
-between step 4) and 5).
+If this isn't working consider running `export FLASK_APP=api.py` between step 4) and 5).

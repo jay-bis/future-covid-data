@@ -13,6 +13,8 @@ code {
 }
 
 .leaflet-container {
-  width: 100%;
+  width: 70%;
   height: 100vh;
+  border: 3px solid rgb(75, 69, 69);
+  border-left: 1.5px solid rgb(75, 69, 69);
 }

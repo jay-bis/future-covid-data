@@ -59,3 +59,10 @@
 .marker-cluster span {
 	line-height: 30px;
 	}
+
+.info-legend {
+	background-color: #8F8E8E;
+	border: 3px solid rgb(75, 69, 69);
+	padding: 8px;
+	border-radius: 5px;
+}

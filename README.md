@@ -16,3 +16,5 @@ Hello all!
 6) run `flask run` to get the server started
 
 If this isn't working consider running `export FLASK_APP=api.py` between step 5) and 6).
+
+For your browser: http://flask-env.eba-scugi2sb.us-east-2.elasticbeanstalk.com

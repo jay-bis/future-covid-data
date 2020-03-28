@@ -6,22 +6,7 @@ import { useLeaflet } from 'react-leaflet';
 
 import '../../MarkerCluster.Default.css';
 
-const mcg = L.markerClusterGroup({
-    iconCreateFunction: function(cluster) {
-        const childCount = cluster.getChildCount();
-
-        var c = ' marker-cluster-';
-        if (childCount < 10) {
-            c += 'small';
-        } else if (childCount < 100) {
-            c += 'medium';
-        } else {
-            c += 'large';
-        }
-
-        return new L.DivIcon({ className: 'marker-cluster' + c, iconSize: new L.Point(50, 50)});
-    }
-});
+const mcg = L.markerClusterGroup();
 
 const tooltipMsgCurrent = (cases, date) => {
     return `${date}: ${cases.toString()} current cases`

@@ -11,6 +11,7 @@ library(dplyr)
 library(readr)
 library(stats)
 library(ggplot2)
+library(zoo)
 library(lubridate)
 library(spacetime)
 library(leaflet)
@@ -29,19 +30,19 @@ options(scipen=10000)
 ggplot(test_dat, aes(x=city,y=TotalCases)) +
   geom_bar(stat = "identity")
 
-
 test_dat <- test_dat %>%
-  mutate(year = year(date)) %>%
-  mutate(day = day(date)) %>%
-  mutate(month = month(date))
+  mutate(year = as.numeric(year(date))) %>%
+  mutate(day = as.numeric(day(date))) %>%
+  mutate(month = as.numeric(month(date)))
 
-#time series plot
-ts1 <- ts(test_dat, start = min(test_dat$date), end= max(test_dat$date), frequency=7)
+#time series plot - still has errors
+ts <- zoo::as.zoo(test_dat)
+plot(ts)
 
-
+fit <- HoltWinters(ts, beta=FALSE, gamma=FALSE)
 #time series exponential forecasting
 
-#a leaflet heatmap by city 
+#a leaflet heatmap by city - just markers
 leaflet(test_dat) %>%
   addProviderTiles(providers$Stamen.Toner) %>%
   addCircleMarkers(test_dat$TotalCases, lng=test_dat$lng, lat=test_dat$lat, radius = .5)

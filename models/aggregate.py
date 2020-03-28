@@ -28,3 +28,11 @@ lat_lon["lon_dist_km"] = lat_lon.lon.map(
 lat_lon["lat_dist_km"] = lat_lon.lat.map(
     lambda x: geod.inv(lon_ref, lat_ref, lon_ref, x)[2] / 1000)
 df = pd.merge(df, lat_lon, on='geo_hash')
+
+# round to km grid
+df['lat_grid_km'] = df.lat_dist_km.round()
+df['lon_grid_km'] = df.lon_dist_km.round()
+
+# case counts per point on grid
+df_case_grid = df.groupby(['lat_grid_km', 'lon_grid_km']).count()[
+    ['caid']].rename(columns={'caid': 'cases'}).reset_index()

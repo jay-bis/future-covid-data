@@ -11,21 +11,35 @@ library(dplyr)
 library(readr)
 library(stats)
 library(ggplot2)
+library(lubridate)
+library(spacetime)
 library(leaflet)
 
 #load data
-#test_dat <- read_csv("test_dat.csv")
+test_dat <- read_csv("test_dat.csv")
 
 #Basic Explanatory Data Analysis
 
 test_dat <- test_dat%>%
   group_by(city, date) %>%
-  mutate(TotalCases = sum(currentCaseCount))
-
+  mutate(TotalCases = sum(currentCaseCount)) 
+  
 #a basic plot
 options(scipen=10000)
 ggplot(test_dat, aes(x=city,y=TotalCases)) +
   geom_bar(stat = "identity")
+
+
+test_dat <- test_dat %>%
+  mutate(year = year(date)) %>%
+  mutate(day = day(date)) %>%
+  mutate(month = month(date))
+
+#time series plot
+ts1 <- ts(test_dat, start = min(test_dat$date), end= max(test_dat$date), frequency=7)
+
+
+#time series exponential forecasting
 
 #a leaflet heatmap by city 
 leaflet(test_dat) %>%

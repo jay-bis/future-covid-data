@@ -6,10 +6,29 @@ output: html_document
 ---
 
 ```{r}
+#load packages
 library(dplyr)
 library(readr)
+library(stats)
+library(ggplot2)
+library(leaflet)
 
-test_dat <- read_csv("test_dat.csv")
+#load data
+#test_dat <- read_csv("test_dat.csv")
 
+#Basic Explanatory Data Analysis
 
+test_dat <- test_dat%>%
+  group_by(city, date) %>%
+  mutate(TotalCases = sum(currentCaseCount))
+
+#a basic plot
+options(scipen=10000)
+ggplot(test_dat, aes(x=city,y=TotalCases)) +
+  geom_bar(stat = "identity")
+
+#a leaflet heatmap by city 
+leaflet(test_dat) %>%
+  addProviderTiles(providers$Stamen.Toner) %>%
+  addCircleMarkers(test_dat$TotalCases, lng=test_dat$lng, lat=test_dat$lat, radius = .5)
 ```

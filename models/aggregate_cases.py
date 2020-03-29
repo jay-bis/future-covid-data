@@ -1,4 +1,4 @@
-"""Aggregate data from S3 into ML ready format. WIP.
+"""Aggregate case count data from S3 into ML ready format.
 """
 import pandas as pd
 import pygeohash
@@ -7,6 +7,8 @@ from pyproj import Geod
 
 
 # list of positions of cases each day
+# note: these hardcoded files are NOT case counts, but if we obtained
+# case counts we could aggregate them this way to get hotspots
 files = ['Mar10.parquet',
          'Mar11.parquet',
          'Mar12.parquet',

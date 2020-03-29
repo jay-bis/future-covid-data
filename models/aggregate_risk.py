@@ -43,11 +43,14 @@ for i, filename in enumerate(files):
             {'geo_hash': pd.Series.mode})
         user_mode_loc['geo_hash_mode'] = user_mode_loc.geo_hash.apply(
             lambda x: x if isinstance(x, str) else x[0])  # if 2 modes use 1st
+        user_mode_loc = user_mode_loc.drop(columns='geo_hash').reset_index()
 
         # distinct locations for each user this day
         dist_locs = df_raw[['caid', 'geo_hash']].drop_duplicates()
         dist_locs = pd.merge(dist_locs, user_mode_loc,
                              on='caid', how='left')
+        del(df_raw)
+        del(user_mode_loc)
 
         # get lat, lon for all geo hashes
         unique_geohash = dist_locs[['geo_hash']].drop_duplicates()
@@ -75,8 +78,8 @@ for i, filename in enumerate(files):
         distinct_locs = pd.concat([distinct_locs, dist_locs])
         # NOTE: may have duplicate entries per user-geo_hash_mode,
         # but its too computationally challenging for my laptop to
-        # calculate mode across the entire dataset. Effectively if
-        # they have a different mode (home) in the two datasets they will
+        # calculate mode (home) across the entire dataset. Effectively
+        # if they have a different home in the two datasets they will
         # be treated as 2 measures of max distance traveled from home.
 
     # most frequent user position ("home"), now with lat, lon

@@ -38,7 +38,7 @@ const AddressForm = props => {
           onSelect={handleSelect}
         >
           {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => (
-            <div className="input-group mb-3" style={{ display: 'block' }}>
+            <div className="input-group mb-3" style={{ display: 'block', width: '90%' }}>
                 <div className="input-group-prepend">
                 <span className="input-group-text" id="basic-addon1">Address</span>
                 <input
@@ -47,6 +47,9 @@ const AddressForm = props => {
                     className: 'form-control',
                     })}
               />
+              <span onClick={() => setAddress('')} className="btn btn-xs btn-default">
+                <i className="fas fa-times"></i>
+              </span>
             </div>
               <div className="autocomplete-dropdown-container">
                 {loading && <div>Loading...</div>}

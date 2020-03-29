@@ -1,8 +1,9 @@
 import React from 'react';
 import { Button, Modal, ListGroup } from 'react-bootstrap';
 
-import '../AddressForm';
 import AddressForm from '../AddressForm';
+
+import './UserInput.css';
 
 const UserInput = props => {
 
@@ -26,7 +27,10 @@ const UserInput = props => {
 
     return (
         <div>
-            <Button type="button" onClick={handleShow}>Enter Input</Button>
+            <div style={{ marginTop: '150px' }}>
+                <p className="header-text">Add your previous location(s) to the map!</p>
+                <Button style={{ border: "1.5px solid white" }} type="button" onClick={handleShow}>Enter Input</Button>
+            </div>
         
             <Modal 
                 show={show} 
@@ -46,7 +50,7 @@ const UserInput = props => {
                                     <ListGroup.Item key={Math.random()}>
                                         {addr}
                                         <span onClick={() => handleListItemClose(addr)}className="btn btn-xs btn-default">
-                                            <i class="fas fa-times"></i>
+                                            <i className="fas fa-times"></i>
                                         </span>
                                     </ListGroup.Item>
                             ))}

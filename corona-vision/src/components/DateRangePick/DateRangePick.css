@@ -1,0 +1,20 @@
+.submit-btn {
+    margin: 10px 150px;
+    border: 1.5px solid white;
+}
+
+.error-msg {
+    color: rgb(167, 9, 9);
+    font-weight: 600;
+}
+
+.explanatory-text {
+    text-align: left;
+    margin: 10px 20px;
+    font-size: 14px;
+}
+
+.header-text {
+    font-weight: 500;
+    color: white;
+}

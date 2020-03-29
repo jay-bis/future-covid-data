@@ -6,6 +6,7 @@ from pyarrow.parquet import ParquetFile
 from pyproj import Geod
 
 
+# list of positions of cases each day
 files = ['Mar10.parquet',
          'Mar11.parquet',
          'Mar12.parquet',
@@ -54,7 +55,8 @@ for i, filename in enumerate(files):
         df_raw['lon_grid_km'] = df_raw.lon_dist_km.round().astype(int)
 
         # case counts per point on grid
-        df_case_grid_1group = df_raw.groupby(
+        df_case_grid_1group = df_raw[
+            ['lat_grid_km', 'lon_grid_km', 'caid']].drop_duplicates().groupby(
             ['lat_grid_km', 'lon_grid_km']).count()[['caid']].rename(
                 columns={'caid': datestring}).reset_index()
         del(df_raw)
@@ -66,10 +68,6 @@ for i, filename in enumerate(files):
     else:
         df = pd.merge(df, df_case_grid, how='outer',
                       on=['lat_grid_km', 'lon_grid_km'])
-
-    print()
-    print(df.sample(10))
-    print(df_case_grid.isna().sum())
 
 df = df.fillna(0).astype(int)
 df.to_csv('../data/case_grid_timeseries.csv', index=False)

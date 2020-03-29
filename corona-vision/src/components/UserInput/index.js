@@ -9,6 +9,7 @@ const UserInput = props => {
 
     const [show, setShow] = React.useState(false);
     const [addrList, setAddrList] = React.useState([]);
+    const [delAddr, setDelAddr] = React.useState('');
 
     const handleClose = () => {
         setShow(false);
@@ -21,8 +22,8 @@ const UserInput = props => {
     }
 
     const handleListItemClose = addr => {
-        console.log(addrList);
-        setAddrList(addrList.filter(item => item !== addr))
+        setAddrList(addrList.filter(item => item !== addr));
+        setDelAddr(addr);
     };
 
     return (
@@ -44,6 +45,7 @@ const UserInput = props => {
                     <Modal.Body>
                         <AddressForm 
                             setParentAddrList={setAddrList}
+                            addrToDelete={delAddr}
                         />
                         <ListGroup>
                             {addrList.map(addr => (

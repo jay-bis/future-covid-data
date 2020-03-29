@@ -12,6 +12,12 @@ const AddressForm = props => {
     const [latlngs, setLatlngs] = React.useState([]);
     const [addrList, setAddrList] = React.useState([])
 
+    React.useEffect(() => {
+        if (props.addrToDelete) {
+            setAddrList(addrList.filter(item => item !== props.addrToDelete));
+        }
+    }, [props.addrToDelete])
+
     // here, we'll set the latlng object we get to some piece of state
     const handleSelect = addr => {
         // make sure addr in search bar is changed even if

@@ -107,6 +107,7 @@ for i, filename in enumerate(files):
     else:
         geo_summary = pd.merge(geo_summary, geo_summ, how='outer',
                                on=['lat', 'lon'], suffixes=['_1', '_2'])
+        geo_summary.fillna(0, inplace=True)
         geo_summary['dist_km'] = (
             (geo_summary.dist_km_1 * geo_summary.num_1 +
              geo_summary.dist_km_2 * geo_summary.num_2) /

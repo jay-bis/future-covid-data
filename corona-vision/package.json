@@ -7,9 +7,12 @@
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
     "react": "^16.13.1",
+    "react-bootstrap": "^1.0.0",
     "react-date-range": "^1.0.3",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^5.2.0",
     "react-leaflet": "^2.6.3",
+    "react-places-autocomplete": "^7.2.1",
     "react-scripts": "3.4.1"
   },
   "devDependencies": {

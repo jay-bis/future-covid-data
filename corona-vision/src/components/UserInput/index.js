@@ -10,6 +10,7 @@ const UserInput = props => {
     const [show, setShow] = React.useState(false);
     const [addrList, setAddrList] = React.useState([]);
     const [delAddr, setDelAddr] = React.useState('');
+    const [symptom, setSymptom] = React.useState('');
 
     const handleClose = () => {
         setShow(false);
@@ -25,6 +26,14 @@ const UserInput = props => {
         setAddrList(addrList.filter(item => item !== addr));
         setDelAddr(addr);
     };
+
+    const yesSymptoms = () => {
+        setSymptom(true);
+    };
+
+    const noSymptoms = () => {
+        setSymptom(false);
+    }
 
     return (
         <div>
@@ -43,6 +52,27 @@ const UserInput = props => {
                     <Modal.Title>Enter your last known locations (up to 14 days ago)</Modal.Title>
                 </Modal.Header>
                     <Modal.Body>
+                        <div style={{ margin: '25px' }}>
+                            Are you symptomatic?
+                            <Button 
+                                style={{ marginLeft: '15px' }} 
+                                type="button" 
+                                variant="success"
+                                className={symptom ? 'btn-select' : ''}
+                                onClick={yesSymptoms}
+                                >
+                                    Yes
+                            </Button>
+                            <Button 
+                                style={{ marginLeft: '15px' }} 
+                                type="button" 
+                                variant="danger"
+                                className={!symptom ? 'btn-select' : ''}
+                                onClick={noSymptoms}
+                                >
+                                    No
+                            </Button>
+                        </div>
                         <AddressForm 
                             setParentAddrList={setAddrList}
                             addrToDelete={delAddr}

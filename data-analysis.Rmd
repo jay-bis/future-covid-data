@@ -19,8 +19,10 @@ library(leaflet)
 #load data
 test_dat <- read_csv("test_dat.csv")
 
-#Basic Explanatory Data Analysis
+#fix date col
+test_dat$date = as.Date(test_dat$date)
 
+#Basic Explanatory Data Analysis
 test_dat <- test_dat%>%
   group_by(city, date) %>%
   mutate(TotalCases = sum(currentCaseCount)) 
@@ -35,9 +37,15 @@ test_dat <- test_dat %>%
   mutate(day = as.numeric(day(date))) %>%
   mutate(month = as.numeric(month(date)))
 
-#time series plot - still has errors
-ts <- zoo::as.zoo(test_dat)
-plot(ts)
+#time series plot
+graphics::plot.default(
+  x = test_dat$date,
+  y = test_dat$TotalCases,
+  type = "l",
+  xlab = "Date",
+  ylab = "Case Count",
+  main = "COVID Case Count Time series"
+)
 
 fit <- HoltWinters(ts, beta=FALSE, gamma=FALSE)
 #time series exponential forecasting

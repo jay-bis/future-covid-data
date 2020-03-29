@@ -16,10 +16,38 @@ const MarkerCluster = props => {
 
     const { map } = useLeaflet();
 
+    // render legend only once
+    useEffect(() => {
+        var legend = L.control({position: 'topleft'});
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.create('div', 'info-legend');
+            const labels = ['<strong>Legend</strong>'];
+            const categories = ['Symptomatic','Asymptomatic'];
+
+            for (var i = 0; i < categories.length; i++) {
+
+                    div.innerHTML += 
+                    labels.push(
+                        categories[i] === 'Symptomatic' 
+                        ? "<p>Symptomatic User: </p><img src='https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' />"
+                        : "<p>Asymptomatic User: </p><img src='https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png' />"
+                    );
+
+                }
+                div.innerHTML = labels.join('<br>');
+            return div;
+        };
+        legend.addTo(map);
+    }, [])
+    
+
+    // every time markers props changes, render new
+    // clusters
     useEffect(() => {
         mcg.clearLayers();
-        props.markers.forEach(({ position, symptomatic, date }) => (
-            L.marker(new L.LatLng(position.lat, position.lng), {
+        props.markers.forEach(({ lat, lng, symptomatic, date }) => (
+            L.marker(new L.LatLng(lat, lng), {
                 icon: new L.Icon({iconUrl: symptomatic 
                     ? 
                     'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png'
@@ -32,28 +60,6 @@ const MarkerCluster = props => {
         .bindTooltip(tooltipMsg(date))
         )
     map.addLayer(mcg);
-
-    var legend = L.control({position: 'topleft'});
-    legend.onAdd = function (map) {
-
-        var div = L.DomUtil.create('div', 'info-legend');
-        const labels = ['<strong>Legend</strong>'];
-        const categories = ['Symptomatic','Asymptomatic'];
-
-        for (var i = 0; i < categories.length; i++) {
-
-                div.innerHTML += 
-                labels.push(
-                    categories[i] === 'Symptomatic' 
-                    ? "<p>Symptomatic User: </p><img src='https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png' />"
-                    : "<p>Asymptomatic User: </p><img src='https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png' />"
-                );
-
-            }
-            div.innerHTML = labels.join('<br>');
-        return div;
-    };
-    legend.addTo(map);
 
     }, [props.markers, map]);
 

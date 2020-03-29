@@ -10,12 +10,24 @@ export const postEvents = data => {
   });
 };
 
-export const getEvents = query => {
-  return axios({
-    method: 'GET',
-    url: API_URL,
-    query
-  });
+export const getEvents = async query => {
+  try {
+    const resp = await axios.get(API_URL, {
+      params: {
+        maxlat: query.maxlat,
+        maxlng: query.maxlng,
+        minlat: query.minlat,
+        minlng: query.minlng
+      }
+    });
+    if (resp.data.errorMessage) {
+      console.log(resp.errorMessage);
+      return ([]);
+    }
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export default {

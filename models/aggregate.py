@@ -37,7 +37,7 @@ for i, filename in enumerate(files):
         lat_lon['geo_hash'] = unique_geohash.values
 
         # get reference points ONCE and use same ones every time
-        if i == 0:
+        if i == 0 and j == 0:
             lon_ref, lat_ref = lat_lon.lon.mean(), lat_lon.lat.mean()
             print(f'\nlon ref: {lon_ref}, lat ref: {lat_ref}\n')
 

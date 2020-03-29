@@ -19,6 +19,11 @@ const UserInput = props => {
         console.log('hello');
     }
 
+    const handleListItemClose = addr => {
+        console.log(addrList);
+        setAddrList(addrList.filter(item => item !== addr))
+    };
+
     return (
         <div>
             <Button type="button" onClick={handleShow}>Enter Input</Button>
@@ -38,7 +43,12 @@ const UserInput = props => {
                         />
                         <ListGroup>
                             {addrList.map(addr => (
-                                <ListGroup.Item>{addr}</ListGroup.Item>
+                                    <ListGroup.Item key={Math.random()}>
+                                        {addr}
+                                        <span onClick={() => handleListItemClose(addr)}className="btn btn-xs btn-default">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    </ListGroup.Item>
                             ))}
                         </ListGroup>
                     </Modal.Body>

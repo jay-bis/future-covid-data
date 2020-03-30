@@ -1,12 +1,15 @@
 """Aggregate smartphone data from S3 to per location travel.
 
-WIP: currently uses distance traveled by people at different
+Currently uses distance traveled by people at different
 home locations as a proxy for risk. Home is defined by a user's
 most frequent geo_hash. We calculate the max distance from home
 travelled by each user, and then take an average these values
 at each distinct lat/lon home location in the dataset.
 
-TODO: normalize distances traveled into some measure of risk.
+TODO: There is some bug that needs to be worked out with the way
+different days are being combined (I think). I was able to get
+good aggregated travel data for a day at a time, but the
+multiple day dataset was getting all zeros for travel distance.
 """
 import pandas as pd
 import pygeohash
@@ -99,8 +102,6 @@ for i, filename in enumerate(files[8:]):
         columns={'dist_km': 'max_dist_km'})
     user_home_summary = pd.merge(user_mode_loc, user_home_summary,
                                  on=['caid', 'geo_hash'])
-    print()
-    print(user_home_summary.sample(10))
 
     # get average of max-user-travel per lat, lon location
     geo_summ = user_home_summary.groupby(['lat', 'lon']).agg(
@@ -122,11 +123,9 @@ for i, filename in enumerate(files[8:]):
             )
         geo_summary['num'] = geo_summary.num_1 + geo_summary.num_2
 
-        print()
-        print(geo_summary.head(10))
-
         geo_summary = geo_summary[['lat', 'lon', 'dist_km', 'num']]
-        geo_summary.to_csv(f'geo_summary_{datestring}.csv', index=False)
+        geo_summary.to_csv(f'../data/geo_summary_{datestring}.csv',
+                           index=False)
 
 # pivot into lat x lon grid
 geo_summary_grid = geo_summary.pivot_table(
@@ -136,5 +135,5 @@ geo_summary_grid = geo_summary.pivot_table(
 geo_summary_grid.columns = geo_summary_grid.columns.sort_values()
 geo_summary_grid.sort_index(ascending=False, inplace=True)
 
-geo_summary_grid.to_csv('geo_summary_grid.csv')
-geo_summary.to_csv('geo_summary.csv', index=False)
+geo_summary_grid.to_csv('../data/geo_summary_grid.csv')
+geo_summary.to_csv('../data/geo_summary.csv', index=False)

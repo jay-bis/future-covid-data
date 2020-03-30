@@ -3,10 +3,10 @@ import { Map, TileLayer } from 'react-leaflet';
 import 'leaflet.markercluster';
 
 import MarkerCluster from '../MarkerCluster';
-import { getEvents } from '../../utils/api';
+import { getEvents, getPredictions } from '../../utils/api';
 
 
-const GlobalMap = () => {
+const GlobalMap = props => {
 
     const position = [34.0522, -118.2437];
 
@@ -16,11 +16,16 @@ const GlobalMap = () => {
 
     React.useEffect(() => {
         async function getData () {
-            const response = await getEvents(bounds);
-            setAddressPoints(response);
+            if (props.mapPred) {
+                const response = await getPredictions(bounds, props.mapDates);
+                setAddressPoints(response);
+            } else {
+                const response = await getEvents(bounds);
+                setAddressPoints(response);
+            }
         }
         getData();
-    }, [bounds]);
+    }, [bounds, props.mapPred]);
 
     const handleViewport = () => {
         const mapBounds = map.leafletElement.getBounds();

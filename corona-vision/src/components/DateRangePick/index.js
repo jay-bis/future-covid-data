@@ -42,6 +42,9 @@ const DateRangePick = props => {
       
       const formattedStart = format(start, 'yyyy-MM-dd');
       const formattedEnd = format(end, 'yyyy-MM-dd');
+
+      props.setParentDates({startDate: formattedStart, endDate: formattedEnd});
+      props.setParentOnPred(true);
       console.log(formattedStart, formattedEnd);
     };
 
@@ -58,13 +61,22 @@ const DateRangePick = props => {
             moveRangeOnFirstSelection={false}
             ranges={range}
           />
-          <button 
-            type="button" 
-            className="btn btn-primary submit-btn"
-            onClick={submitInterval}>
-              Submit
+          <div style={{ textAlign: 'center' }}>
+            <button 
+              type="button" 
+              className="btn btn-primary submit-btn"
+              onClick={submitInterval}>
+                Submit
+              </button>
+            <p className="error-msg">{error}</p>
+            <button
+              type="button"
+              className="btn btn-primary submit-btn"
+              onClick={() => props.setParentOnPred(false)}
+            >
+              Show Current Cases
             </button>
-          <p className="error-msg">{error}</p>
+          </div>
         </div>
       )
 }

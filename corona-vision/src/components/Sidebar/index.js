@@ -6,10 +6,12 @@ import './Sidebar.css';
 
 const Sidebar = props => {
 
-
     return (
         <div className="sidenav">
-            <DateRangePick />
+            <DateRangePick 
+                setParentDates={props.setSidebarDates}
+                setParentOnPred={props.setSidebarOnPred}
+            />
             <UserInput />
         </div>
     )

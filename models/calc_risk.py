@@ -42,7 +42,7 @@ ny_case_count = ny_case_count.rename(columns={'date': 'cases'}).reset_index()
 # we use just one day of cell phone location data here.
 # in the future we should aggregate more, but we ran into
 # some issues and bugs trying to get it all together here.
-df_travel = pd.read_csv('geo_summary_Mar10.csv')
+df_travel = pd.read_csv('../data/geo_summary_Mar10.csv')
 
 geod = Geod(ellps='WGS84')
 

@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const API_URL = 'https://dbb7k004t9.execute-api.us-east-1.amazonaws.com/dev/events';
+const API_URL_PREDICT = 'https://dbb7k004t9.execute-api.us-east-1.amazonaws.com/dev/predictions';
 
 export const putEvents = async (symptom, addrList) => {
   const formatted = addrList.map(item => (
@@ -41,7 +42,31 @@ export const getEvents = async query => {
   }
 };
 
+export const getPredictions = async (query, dateRange) => {
+  try {
+    const resp = await axios.get(API_URL_PREDICT, {
+      params: {
+        maxlat: query.maxlat,
+        maxlng: query.maxlng,
+        minlat: query.minlat,
+        minlng: query.minlng,
+        dateStart: dateRange.startDate,
+        dateEnd: dateRange.endDate
+      }
+    })
+    if (resp.data.errorMessage) {
+      console.log(resp.errorMessage);
+      return ([]);
+    }
+    return resp.data;
+  } catch (error) {
+    console.log(error);
+    return([]);
+  }
+}
+
 export default {
   putEvents,
-  getEvents
+  getEvents,
+  getPredictions
 }

@@ -24,8 +24,7 @@ const UserInput = props => {
 
     const handleSubmit = () => {
         putEvents(symptom, latlngs);
-        console.log(latlngs);
-        console.log(symptom);
+        setShow(false);
     }
 
     const handleDateChange = (addr, date) => {

@@ -12,6 +12,10 @@ const tooltipMsg = date => {
     return `Case on: ${date}`
 };
 
+const tooltipRisk = (date, risk) => {
+    return `Case on ${date}\nRisk factor: ${risk.toString()}`
+}
+
 const MarkerCluster = props => {
 
     const { map } = useLeaflet();
@@ -46,6 +50,18 @@ const MarkerCluster = props => {
     // clusters
     useEffect(() => {
         mcg.clearLayers();
+        if ("risk" in props.markers) {
+            props.markers.forEach(({ lat, lng, risk, date }) => (
+                L.marker(new L.LatLng(lat, lng), {
+                    icon: new L.Icon({iconUrl: 
+                        'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png'
+                    })
+                })
+            )
+            .addTo(mcg)
+            .bindTooltip(tooltipRisk(date, risk))
+            )
+        } else {
         props.markers.forEach(({ lat, lng, symptomatic, date }) => (
             L.marker(new L.LatLng(lat, lng), {
                 icon: new L.Icon({iconUrl: symptomatic 
@@ -59,6 +75,7 @@ const MarkerCluster = props => {
         .addTo(mcg)
         .bindTooltip(tooltipMsg(date))
         )
+    }
     map.addLayer(mcg);
 
     }, [props.markers, map]);

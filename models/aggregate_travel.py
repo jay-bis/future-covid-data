@@ -1,4 +1,4 @@
-"""Aggregate smartphone data from S3 into risk per location.
+"""Aggregate smartphone data from S3 to per location travel.
 
 WIP: currently uses distance traveled by people at different
 home locations as a proxy for risk. Home is defined by a user's
@@ -23,12 +23,18 @@ files = ['Mar10.parquet',
          'Mar15.parquet',
          'Mar16.parquet',
          'Mar17.parquet',
+         'Mar18.parquet',
+         'Mar19.parquet',
+         'Mar20.parquet',
+         'Mar21.parquet',
+         'Mar22.parquet',
          ]
+datestring = ''
 
-for i, filename in enumerate(files):
+for i, filename in enumerate(files[8:]):
     print(f'\n{filename}')
+    datestring += filename.split('.')[0]
 
-    datestring = filename.split('.')[0]
     pf = ParquetFile('../data/' + filename)
 
     distinct_locs = pd.DataFrame()
@@ -47,8 +53,7 @@ for i, filename in enumerate(files):
 
         # distinct locations for each user this day
         dist_locs = df_raw[['caid', 'geo_hash']].drop_duplicates()
-        dist_locs = pd.merge(dist_locs, user_mode_loc,
-                             on='caid', how='left')
+        dist_locs = pd.merge(dist_locs, user_mode_loc, on='caid', how='left')
         del(df_raw)
         del(user_mode_loc)
 
@@ -94,6 +99,8 @@ for i, filename in enumerate(files):
         columns={'dist_km': 'max_dist_km'})
     user_home_summary = pd.merge(user_mode_loc, user_home_summary,
                                  on=['caid', 'geo_hash'])
+    print()
+    print(user_home_summary.sample(10))
 
     # get average of max-user-travel per lat, lon location
     geo_summ = user_home_summary.groupby(['lat', 'lon']).agg(
@@ -115,7 +122,11 @@ for i, filename in enumerate(files):
             )
         geo_summary['num'] = geo_summary.num_1 + geo_summary.num_2
 
+        print()
+        print(geo_summary.head(10))
+
         geo_summary = geo_summary[['lat', 'lon', 'dist_km', 'num']]
+        geo_summary.to_csv(f'geo_summary_{datestring}.csv', index=False)
 
 # pivot into lat x lon grid
 geo_summary_grid = geo_summary.pivot_table(

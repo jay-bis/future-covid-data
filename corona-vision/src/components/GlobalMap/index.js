@@ -40,8 +40,9 @@ const GlobalMap = () => {
         <Map 
             ref={(ref) => setMap(ref)}
             center={position} 
-            zoom={13}
+            zoom={11}
             onViewportChanged={handleViewport}
+            whenReady={handleViewport}
         >
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

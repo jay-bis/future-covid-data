@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Modal, ListGroup } from 'react-bootstrap';
 
 import AddressForm from '../AddressForm';
+import SingleDate from '../SingleDate';
+import { putEvents } from '../../utils/api';
 
 import './UserInput.css';
 
@@ -10,20 +12,36 @@ const UserInput = props => {
     const [show, setShow] = React.useState(false);
     const [addrList, setAddrList] = React.useState([]);
     const [delAddr, setDelAddr] = React.useState('');
-    const [symptom, setSymptom] = React.useState('');
+    const [symptom, setSymptom] = React.useState(false);
+    const [latlngs, setLatlngs] = React.useState([]);
 
     const handleClose = () => {
         setShow(false);
         setAddrList([]);
+        setLatlngs([]);
     }
     const handleShow = () => setShow(true);
 
     const handleSubmit = () => {
-        console.log('hello');
+        putEvents(symptom, latlngs);
+        console.log(latlngs);
+        console.log(symptom);
+    }
+
+    const handleDateChange = (addr, date) => {
+        setAddrList(prev => {
+            for (var i = 0; i<prev.length; i++) {
+                if (prev[i].addr === addr) {
+                    prev[i].date = date
+                }
+            }
+            return [...prev];
+        
+        });
     }
 
     const handleListItemClose = addr => {
-        setAddrList(addrList.filter(item => item !== addr));
+        setAddrList(addrList.filter(item => item.addr !== addr));
         setDelAddr(addr);
     };
 
@@ -76,16 +94,23 @@ const UserInput = props => {
                         <AddressForm 
                             setParentAddrList={setAddrList}
                             addrToDelete={delAddr}
+                            setParentLatlngs={setLatlngs}
                         />
                         <ListGroup>
-                            {addrList.map(addr => (
+                            {addrList.map((item) => {
+                                    return (
                                     <ListGroup.Item key={Math.random()}>
-                                        {addr}
-                                        <span onClick={() => handleListItemClose(addr)}className="btn btn-xs btn-default">
+                                        {item.addr}
+                                        <span onClick={() => handleListItemClose(item.addr)}className="btn btn-xs btn-default">
                                             <i className="fas fa-times"></i>
                                         </span>
+                                        <SingleDate 
+                                            setAddrItemWithDate={handleDateChange}
+                                            addr={item.addr}
+                                        />
                                     </ListGroup.Item>
-                            ))}
+                                    )
+                            })}
                         </ListGroup>
                     </Modal.Body>
                     <Modal.Footer>

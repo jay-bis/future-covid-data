@@ -3,14 +3,14 @@ import PlacesAutocomplete, {
     geocodeByAddress,
     getLatLng,
   } from 'react-places-autocomplete';
+import format from 'date-fns/format';
 
 import './AddressForm.css';
 
 const AddressForm = props => {
 
     const [address, setAddress] = React.useState('');
-    const [latlngs, setLatlngs] = React.useState([]);
-    const [addrList, setAddrList] = React.useState([])
+    const [addrList, setAddrList] = React.useState([]);
 
     React.useEffect(() => {
         if (props.addrToDelete) {
@@ -26,12 +26,12 @@ const AddressForm = props => {
         geocodeByAddress(addr)
             .then(results => getLatLng(results[0]))
             .then(latlng => {
-                setLatlngs(prev => [...prev, latlng]);
+                props.setParentLatlngs(prev => [...prev, {coords: latlng, date: format(new Date(), 'yyyy-MM-dd')}]);
             }
             )
             .catch(error => console.error(error))
         setAddrList(prev => {
-            const newList = [...prev, addr];
+            const newList = [...prev, {addr: addr, date: new Date()}];
             props.setParentAddrList(newList);
             return newList;
         });

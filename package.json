@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-datepicker": "^2.14.1"
+  }
+}

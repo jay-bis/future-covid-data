@@ -2,12 +2,22 @@ import axios from 'axios';
 
 const API_URL = 'https://dbb7k004t9.execute-api.us-east-1.amazonaws.com/dev/events';
 
-export const postEvents = data => {
-  return axios({
-    method: 'POST',
+export const putEvents = async (symptom, addrList) => {
+  const formatted = addrList.map(item => (
+    {
+      date: item.date,
+      symptomatic: symptom,
+      position: item.coords
+    }
+  ))
+  const resp = await axios({
+    method: 'PUT',
     url: API_URL,
-    data
+    data: formatted
   });
+  if (resp.status === 200) {
+    console.log('Success!');
+  }
 };
 
 export const getEvents = async query => {
@@ -27,10 +37,11 @@ export const getEvents = async query => {
     return resp.data;
   } catch (error) {
     console.log(error);
+    return([]);
   }
 };
 
 export default {
-  postEvents,
+  putEvents,
   getEvents
 }
